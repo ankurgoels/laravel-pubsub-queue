@@ -87,7 +87,7 @@ class PubSubQueue extends Queue implements QueueContract
     {
         $topic = $this->getTopic($queue, true);
 
-        $this->subscribeToTopic($topic);
+        $this->subscribeToTopic($topic, $queue);
 
         $publish = ['data' => base64_encode($payload)];
 
@@ -135,7 +135,7 @@ class PubSubQueue extends Queue implements QueueContract
             return;
         }
 
-        $subscription = $topic->subscription($this->getSubscriberName());
+        $subscription = $topic->subscription($this->getSubscriberName($queue));
         $messages = $subscription->pull([
             'returnImmediately' => true,
             'maxMessages' => 1,
@@ -181,7 +181,7 @@ class PubSubQueue extends Queue implements QueueContract
 
         $topic = $this->getTopic($this->getQueue($queue), true);
 
-        $this->subscribeToTopic($topic);
+        $this->subscribeToTopic($topic, $queue);
 
         return $topic->publishBatch($payloads);
     }
@@ -194,7 +194,7 @@ class PubSubQueue extends Queue implements QueueContract
      */
     public function acknowledge(Message $message, $queue = null)
     {
-        $subscription = $this->getTopic($this->getQueue($queue))->subscription($this->getSubscriberName());
+        $subscription = $this->getTopic($this->getQueue($queue))->subscription($this->getSubscriberName($queue));
         $subscription->acknowledge($message);
     }
 
@@ -288,12 +288,12 @@ class PubSubQueue extends Queue implements QueueContract
      *
      * @return \Google\Cloud\PubSub\Subscription
      */
-    public function subscribeToTopic(Topic $topic)
+    public function subscribeToTopic(Topic $topic, $queue)
     {
-        $subscription = $topic->subscription($this->getSubscriberName());
+        $subscription = $topic->subscription($this->getSubscriberName($queue));
 
         if (! $subscription->exists()) {
-            $subscription = $topic->subscribe($this->getSubscriberName());
+            $subscription = $topic->subscribe($this->getSubscriberName($queue));
         }
 
         return $subscription;
@@ -306,9 +306,9 @@ class PubSubQueue extends Queue implements QueueContract
      *
      * @return string
      */
-    public function getSubscriberName()
+    public function getSubscriberName($queue)
     {
-        return $this->subscriber;
+        return $this->getQueue($queue);
     }
 
     /**
