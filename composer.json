@@ -1,8 +1,8 @@
 {
-    "name": "kainxspirits/laravel-pubsub-queue",
+    "name": "ankurgoels/laravel-pubsub-queue",
     "description": "Queue driver for Google Cloud Pub/Sub.",
     "keywords": [
-        "kainxspirits",
+        "ankurgoels",
         "laravel",
         "queue",
         "gcp",
@@ -13,8 +13,8 @@
     "type": "library",
     "authors": [
         {
-            "name": "Kendryck",
-            "email": "kainxspirits@users.noreply.github.com"
+            "name": "Ankur Goel",
+            "email": "ankurgoel@live.in"
         }
     ],
     "require": {
