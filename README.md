@@ -10,7 +10,7 @@ This package is a Laravel queue driver that uses the [Google PubSub](https://git
 You can easily install this package with [Composer](https://getcomposer.org) by running this command :
 
 ```bash
-composer require kainxspirits/laravel-pubsub-queue
+composer require ankurgoels/laravel-pubsub-queue
 ```
 
 If you disabled package discovery, you can still manually register this package by adding the following line to the providers of your `config/app.php` file :
@@ -32,7 +32,7 @@ You can check [Google Cloud PubSub client](http://googleapis.github.io/google-cl
     'project_id' => env('PUBSUB_PROJECT_ID', 'your-project-id'),
     'retries' => 3,
     'request_timeout' => 60,
-    'subscriber' => 'subscriber-name',
+    'keyFile' => json_decode(file_get_contents(storage_path('keys/pubsub.json')), true),
 ],
 ```
 
